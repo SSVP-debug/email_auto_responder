@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 README.md
 markdown
 Copy
@@ -116,3 +117,7 @@ LinkedIn: www.linkedin.com/in/shiva-shankara-vara-prasad-41928831b
 
 ---
 
+=======
+# email_auto_responder
+Simple Python script to auto-reply to HR or faculty emails.
+>>>>>>> 07eca8f00a54dc268d35e55fc9cf7637ee2e8d72
