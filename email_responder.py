@@ -1,4 +1,4 @@
-import imaplib
+import imaplib                                # important libraries to connect to gmail server
 import email
 from email.header import decode_header
 import smtplib
@@ -8,10 +8,10 @@ import time
 
 # ----------- Configuration -------------
 EMAIL = "your_email@gmail.com"         # Your email
-APP_PASSWORD = "your_app_password"     # App-specific password from Gmail
+APP_PASSWORD = "your_app_password"     # App-specific password from Gmail -note that not your gmail password
 SMTP_SERVER = "smtp.gmail.com"
 IMAP_SERVER = "imap.gmail.com"
-RESPONDED_LOG = set()  # To avoid replying twice
+RESPONDED_LOG = set()                  # To avoid replying twice
 # ---------------------------------------
 
 # ----------- Function to check new emails ----------
@@ -22,16 +22,16 @@ def check_emails():
         mail.login(EMAIL, APP_PASSWORD)
         mail.select("inbox")
 
-        # Search for unseen messages
-        status, messages = mail.search(None, 'UNSEEN')
+       
+        status, messages = mail.search(None, 'UNSEEN')            # Search for unseen messages
         email_ids = messages[0].split()
 
         for num in email_ids:
-            _, msg_data = mail.fetch(num, '(RFC822)')
+            _, msg_data = mail.fetch(num, '(RFC822)')              # specail code- raw data of inbox
             for response_part in msg_data:
                 if isinstance(response_part, tuple):
                     msg = email.message_from_bytes(response_part[1])
-                    email_subject = decode_header(msg["Subject"])[0][0]
+                    email_subject = decode_header(msg["Subject"])[0][0]    # [0][0] indicates subject section
                     if isinstance(email_subject, bytes):
                         email_subject = email_subject.decode()
                     from_email = msg["From"]
