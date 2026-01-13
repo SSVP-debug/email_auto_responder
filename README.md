@@ -5,7 +5,7 @@ Copy
 Edit
 #  Auto Email Responder
 
-This is a Python automation project that automatically checks your Gmail inbox for unread messages and sends a polite reply to each one making it perfect for students, HR, faculty, or internship communications.
+This is a Python automation project that automatically checks your Gmail inbox for unread messages and sends a polite reply to each one, making it perfect for students, HR, faculty, or internship communications.
 
 It’s built entirely in Python and runs safely using Gmail’s app password system.
 
@@ -30,10 +30,15 @@ It repeats this check automatically every few minutes forever.
 2. How It Works (Simple Explanation)
 
 I.   Connect to Gmail IMAP server  → Read unread emails
+
 II.  Extract sender and subject   → Prepare auto reply
+
 III. Check if we already replied  → Avoid duplicate
+
 IV.  Send reply using Gmail SMTP  → Polite message sent
+
 V.   Log the details              → Save in database + logs
+
 VI.  Repeat this process every X seconds
 
 
