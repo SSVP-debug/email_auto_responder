@@ -8,7 +8,7 @@ import time
 
 # ----------- Configuration -------------
 EMAIL = "your_email@gmail.com"         # Your email
-APP_PASSWORD = "your_app_password"     # App-specific password from Gmail -note that not your gmail password
+APP_PASSWORD = "Your Password"     # App-specific password from Gmail -note that not your gmail password
 SMTP_SERVER = "smtp.gmail.com"
 IMAP_SERVER = "imap.gmail.com"
 RESPONDED_LOG = set()                  # To avoid replying twice
