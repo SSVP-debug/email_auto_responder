@@ -3,20 +3,24 @@ import email
 from email.header import decode_header
 import smtplib
 from email.message import EmailMessage
+from dotenv import load_dotenv
 import socket
 import schedule
 import time
+import os
 import re
 
 # ----------- Configuration -------------
-EMAIL = "nerellabunny5@gmail.com"         # Your email
-APP_PASSWORD = "stxnyvbfntqsbksn"     # App-specific password from Gmail -note that it is not your gmail password
+load_dotenv()
+EMAIL = os.getenv("GMAIL_ADDRESS", "your_email@gmail.com")         # Your email
+APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "your_app_password")     # App-specific password from Gmail -note that it is not your gmail password
+
 SMTP_SERVER = "smtp.gmail.com"
 IMAP_SERVER = "imap.gmail.com"
+
 NAME = EMAIL.split('@')[0]
-paln_name = re.sub(r'\d+', '', NAME)
+plan_name = re.sub(r'\d+', '', NAME)
 RESPONDED_LOG = set()                  # To avoid replying twice
-# ---------------------------------------
 
 # ----------- Function to check new emails ----------
 def check_emails():
@@ -24,12 +28,25 @@ def check_emails():
     try:
         mail = imaplib.IMAP4_SSL(IMAP_SERVER)
         mail.login(EMAIL, APP_PASSWORD)
-        inbox_mails = mail.select("inbox")
-
-        if "no-reply" in inbox_mails:
-            return None
-        status, messages = mail.search(None, 'UNSEEN')            # Search for unseen messages
-        email_ids = messages[0].split()
+        
+        status, _ = mail.select("INBOX")
+        if status != "OK":
+            print("Could not open INBOX")
+            mail.logout()
+            return
+        
+        status, general_mgs = mail.search(None, 'UNSEEN') 
+        if status != "OK":
+            print("Search Failed")
+            mail.logout()
+            return
+        raw_ids = general_mgs[0]
+        if not raw_ids:
+            print("NO unseen mails")
+            mail.logout()
+            return
+        email_ids = raw_ids.split()
+        
 
         for num in email_ids:
             _, msg_data = mail.fetch(num, '(RFC822)')              # specail code- raw data of inbox
@@ -61,7 +78,7 @@ def send_auto_reply(to_email, subject):
         reply["From"] = EMAIL
         reply["To"] = to_email
         reply.set_content(
-            f"Dear HR/Faculty,\n\nThank you for reaching out. I have received your email and will get back to you shortly.\n\nBest regards,\n{paln_name.capitalize()}"
+            f"Dear HR/Faculty,\n\nThank you for reaching out. I have received your email and will get back to you shortly.\n\nBest regards,\n{plan_name.capitalize()}"
         )
 
         with smtplib.SMTP_SSL(SMTP_SERVER, 465) as server:

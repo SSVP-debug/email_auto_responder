@@ -23,3 +23,8 @@ Thumbs.db
 
 # VS Code settings
 .vscode/
+
+.env
+.env.local
+.env.development
+.env.production
