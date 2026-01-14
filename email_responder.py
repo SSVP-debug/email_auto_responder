@@ -57,7 +57,10 @@ def check_emails():
                     if isinstance(email_subject, bytes):
                         email_subject = email_subject.decode()
                     from_email = msg["From"]
-                    
+                    subject_header = decode_header(msg.get("Subject", ""))
+                    email_subject, encoding = subject_header[0]
+                    if isinstance(email_subject, bytes):
+                        email_subject.decode(encoding or  "utf-8", errors="ignore")
                     # Skip if already responded
                     if from_email in RESPONDED_LOG:
                         continue
@@ -91,7 +94,7 @@ def send_auto_reply(to_email, subject):
 # ------------- Scheduling  the Checker -------------
 schedule.every(1).minutes.do(check_emails)
 
-print("📬 Auto Email Responder is now running...\n(Press Ctrl+C to stop)\n")
+print("Auto Email Responder is now running...\n(Press Ctrl+C to stop)\n")
 
 while True:
     schedule.run_pending()
