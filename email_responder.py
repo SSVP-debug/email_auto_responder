@@ -3,14 +3,18 @@ import email
 from email.header import decode_header
 import smtplib
 from email.message import EmailMessage
+import socket
 import schedule
 import time
+import re
 
 # ----------- Configuration -------------
-EMAIL = "your_email@gmail.com"         # Your email
-APP_PASSWORD = "Your Password"     # App-specific password from Gmail -note that not your gmail password
+EMAIL = "nerellabunny5@gmail.com"         # Your email
+APP_PASSWORD = "stxnyvbfntqsbksn"     # App-specific password from Gmail -note that it is not your gmail password
 SMTP_SERVER = "smtp.gmail.com"
 IMAP_SERVER = "imap.gmail.com"
+NAME = EMAIL.split('@')[0]
+paln_name = re.sub(r'\d+', '', NAME)
 RESPONDED_LOG = set()                  # To avoid replying twice
 # ---------------------------------------
 
@@ -20,9 +24,10 @@ def check_emails():
     try:
         mail = imaplib.IMAP4_SSL(IMAP_SERVER)
         mail.login(EMAIL, APP_PASSWORD)
-        mail.select("inbox")
+        inbox_mails = mail.select("inbox")
 
-       
+        if "no-reply" in inbox_mails:
+            return None
         status, messages = mail.search(None, 'UNSEEN')            # Search for unseen messages
         email_ids = messages[0].split()
 
@@ -45,7 +50,7 @@ def check_emails():
                     RESPONDED_LOG.add(from_email)
 
         mail.logout()
-    except Exception as e:
+    except (imaplib.IMAP4.abort, socket.error, EOFError) as e:
         print("Error checking emails:", e)
 
 # ---------- Function to Send Auto-Reply -----------
@@ -56,7 +61,7 @@ def send_auto_reply(to_email, subject):
         reply["From"] = EMAIL
         reply["To"] = to_email
         reply.set_content(
-            "Dear HR/Faculty,\n\nThank you for reaching out. I have received your email and will get back to you shortly.\n\nBest regards,\n[Your Name]"
+            f"Dear HR/Faculty,\n\nThank you for reaching out. I have received your email and will get back to you shortly.\n\nBest regards,\n{paln_name.capitalize()}"
         )
 
         with smtplib.SMTP_SSL(SMTP_SERVER, 465) as server:
@@ -66,7 +71,7 @@ def send_auto_reply(to_email, subject):
     except Exception as e:
         print("Error sending reply:", e)
 
-# ------------- Scheduling the Checker -------------
+# ------------- Scheduling  the Checker -------------
 schedule.every(1).minutes.do(check_emails)
 
 print("📬 Auto Email Responder is now running...\n(Press Ctrl+C to stop)\n")

@@ -97,6 +97,8 @@ Stipend history is tracked for all roles processed.
 Python 3.x
 
 smtplib, imaplib – For sending and receiving emails
+SMTP is used to send emails from your device to the recipient's mail server.
+IMAP is used to recieve, read, and sync email from the mail server to your phone/laptop.
 
 pandas, csv – For data storage and analysis
 
