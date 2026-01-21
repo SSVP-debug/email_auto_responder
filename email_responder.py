@@ -9,8 +9,7 @@ import schedule
 import time
 import os
 import re
-
-# ----------- Configuration -------------
+# setup
 load_dotenv()
 EMAIL = os.getenv("GMAIL_ADDRESS", "your_email@gmail.com")         # Your email
 APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "your_app_password")     # App-specific password from Gmail -note that it is not your gmail password
@@ -22,7 +21,7 @@ NAME = EMAIL.split('@')[0]
 plan_name = re.sub(r'\d+', '', NAME)
 RESPONDED_LOG = set()                  # To avoid replying twice
 
-# ----------- Function to check new emails ----------
+#  Function to check new emails 
 def check_emails():
     print("Checking for new emails...")
     try:
@@ -49,7 +48,7 @@ def check_emails():
         
 
         for num in email_ids:
-            _, msg_data = mail.fetch(num, '(RFC822)')              # specail code- raw data of inbox
+            _, msg_data = mail.fetch(num, '(RFC822)')  # specail code- raw data of inbox
             for response_part in msg_data:
                 if isinstance(response_part, tuple):
                     msg = email.message_from_bytes(response_part[1])
@@ -73,7 +72,7 @@ def check_emails():
     except (imaplib.IMAP4.abort, socket.error, EOFError) as e:
         print("Error checking emails:", e)
 
-# ---------- Function to Send Auto-Reply -----------
+# Function to Send Auto-Reply 
 def send_auto_reply(to_email, subject):
     try:
         reply = EmailMessage()
@@ -91,7 +90,7 @@ def send_auto_reply(to_email, subject):
     except Exception as e:
         print("Error sending reply:", e)
 
-# ------------- Scheduling  the Checker -------------
+# Scheduling  the Checker 
 schedule.every(1).minutes.do(check_emails)
 
 print("Auto Email Responder is now running...\n(Press Ctrl+C to stop)\n")
