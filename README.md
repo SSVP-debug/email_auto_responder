@@ -1,158 +1,62 @@
-<<<<<<< HEAD
-README.md
-markdown
-Copy
-Edit
-#  Auto Email Responder
+Django Email Auto-Responder
+My first commit of this repo is jsut a python file and virtual environment but later i have integerated Django for UX and Database.
+A simple Django-based email automation system built for clarity and resume value.
+
+## Features
+- Login with email + app password (no Django auth)
+- Fetch unread emails using IMAP
+- Rule-based auto-replies using SMTP
+- Manual STOP control during execution
+- Run-specific overview of processed emails
+- Clean service-layer architecture
+App password is your mail password it something that can be obtained my turning on Two step Authorization.
+
+## Tech Stack
+- Python
+- Django
+- IMAP (imaplib)
+- SMTP (smtplib)
+- SQLite (default Django DB)
+
+## Architecture
+- Single Django app
+- Service layer for email logic
+- One execution = one run (UUID-based)
+- No background workers or async processing
+
+## Auto-Reply Rules
+- Emails containing keywords like:
+  - "internship"
+  - "interview"
+- Others are skipped
+I want to narrow this skipped factor if you have any idea give a PRs.
+
+## Why No Authentication?
+This project focuses on controlled execution clarity rather than multi-user complexity.
+
+## How to Run
+1. Enable Gmail IMAP
+2. Generate App Password
+3. Run:
+   ```bash
+   python manage.py runserver
+
+That's it page loads with unseen mails and their status.
+
+## 🎥 Demo Flow (how YOU should show it)
+
+1. Open login page  
+2. Enter email + app password  
+3. Click **Login / Run**  
+4. Show processing page  
+5. Show **STOP** button  
+6. Click **Overview**  
+7. Show DB-backed table  
+
+##  Optional Next Upgrades 
+
+- AI reply generation (Gemini / OpenAI)
+- Confidence-based reply skipping
+- Attachment detection
+- Background execution
 
-This is a Python automation project that automatically checks your Gmail inbox for unread messages and sends a polite reply to each one, making it perfect for students, HR, faculty, or internship communications.
-
-It’s built entirely in Python and runs safely using Gmail’s app password system.
-
-1. What This Project Does
-
-Think of it as your personal email assistant:
-
-It connects securely to your Gmail inbox.
-
-It checks for unread (new) emails.
-
-For each new email:
-
-It identifies the sender and subject.
-
-Sends an automatic, polite reply.
-
-Saves that email’s unique ID in a database (SQLite) so it never replies twice.
-
-It repeats this check automatically every few minutes forever.
-
-2. How It Works (Simple Explanation)
-
-I.   Connect to Gmail IMAP server  → Read unread emails
-
-II.  Extract sender and subject   → Prepare auto reply
-
-III. Check if we already replied  → Avoid duplicate
-
-IV.  Send reply using Gmail SMTP  → Polite message sent
-
-V.   Log the details              → Save in database + logs
-
-VI.  Repeat this process every X seconds
-
-
-
- Badges
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-blue)
-
-
-3. Setup Instructions
-
-### 1. Install Python packages
-bash:
-pip install schedule
-
-
-   2. Enable App Passwords on Gmail
-      Turn on 2-step verification
-
-   Go to App Passwords
-
-   Generate password for "Mail"
-
-   3. Configure script
-    Open email_responder.py and replace:
-
-   python
-   Copy
-   Edit
-   EMAIL = "your_email@gmail.com"
-   APP_PASSWORD = "your_app_password"
-
-4. Future Features (Ideas):
-
-adds Gmail API OAuth login instead of app password
-   
-Save email logs to .txt or CSV
-
-Intelligent replies based on subject
-
-GUI using Tkinter or Streamlit
-
-Deploy on cloud (Heroku, PythonAnywhere, etc.)
-
-some more be added soon.....
-
- Usage
-Start the program and choose your desired module.
-
-For email responder, ensure Gmail access for less secure apps is enabled (or use an app password).
-
-Internship data is stored in internship_data.csv.
-
-Recommendations are printed in the terminal.
-
-Stipend history is tracked for all roles processed.
-
-5. Technologies Used:
-   
-Python 3.x
-
-smtplib, imaplib – For sending and receiving emails
-SMTP is used to send emails from your device to the recipient's mail server.
-IMAP is used to recieve, read, and sync email from the mail server to your phone/laptop.
-
-pandas, csv – For data storage and analysis
-
-time, email, re – Standard Python libraries
-
-Gmail API (Optional, if moving to OAuth)
-
-
-6. Screenshots
-
-[Auto Email Reply](images/email_demo.png) provided shortly
-
-
-
- Demo Use Case
-Useful for:
-
-Students during internships
-
-HR or recruitment teams
-
-Faculty communication auto-responders
-
-7. Security Notes:
-
- Credentials (email + app password) are never hardcoded.
- .env is ignored by GitHub using .gitignore.
- Database stores only message IDs and email addresses — no sensitive content.
- Use a separate test Gmail account while experimenting
-
-8. Contributing:
-Pull requests are welcome! If you have suggestions for improvements or new features:
-
-Fork the repo
-
-Create a new branch
-
-Submit a PR with a meaningful commit message
-
-Please open an issue first to discuss major changes.
-
- Author
-Nerella Shiva Shankara Vara Prasad
-B.Tech CSE AIML | Python & DSA Enthusiast
-GitHub: https://github.com/SSVP-debug
-LinkedIn: www.linkedin.com/in/shiva-shankara-vara-prasad-41928831b
-
-
-=======
-# email_auto_responder
-Simple Python script to auto-reply to HR or faculty emails.
->>>>>>> 07eca8f00a54dc268d35e55fc9cf7637ee2e8d72

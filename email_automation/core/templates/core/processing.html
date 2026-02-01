@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Emails</title>
+</head>
+<body>
+
+    <!-- TOP RIGHT STOP BUTTON -->
+    <div style="float:right;">
+        <form action="{% url 'stop_run' run_id %}" method="post" style="float:right;">
+    {% csrf_token %}
+    <button style="background:red;color:white;">STOP</button>
+</form>
+
+
+    </div>
+
+    <h2>Auto-reply in progress</h2>
+
+    <!-- ERROR MESSAGE GOES HERE -->
+    {% if error %}
+        <p style="color:red;">
+            Error: {{ error }}
+        </p>
+    {% endif %}
+
+    <!-- EMAIL LIST -->
+    <ul>
+        {% for email in emails %}
+            <li>
+                <strong>Email:</strong> {{ email.from }} <br>
+                <strong>Subject:</strong> {{ email.subject }} <br>
+                <strong>Status:</strong> {{ email.status }}
+            </li>
+            <hr>
+        {% empty %}
+            <p>No unread emails found.</p>
+        {% endfor %}
+    </ul>
+
+    <!-- OVERVIEW BUTTON -->
+    <form action="{% url 'overview' run_id %}" method="get">
+        <button>View Overview</button>
+    </form>
+    <strong>Status:</strong>
+{% if email.status == "REPLIED" %}
+    <span style="color:green;">Auto-replied</span>
+{% elif email.status == "SKIPPED" %}
+    <span style="color:gray;">Skipped</span>
+{% else %}
+    {{ email.status }}
+{% endif %}
+</body>
+</html>

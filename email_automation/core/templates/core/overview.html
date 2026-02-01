@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Overview</title>
+</head>
+<body>
+    <h2>Last Run Overview</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Sender</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Time</th>
+            <th>Follow-up</th>
+        </tr>
+        {% for email in emails %}
+        <tr>
+            <td>{{ email.sender_email }}</td>
+            <td>{{ email.subject }}</td>
+            <td>{{ email.status }}</td>
+            <td>{{ email.created_at }}</td>
+            <td>{% if email.needs_manual_reply %}
+                <span style="color:orange;">Manual reply pending</span>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
