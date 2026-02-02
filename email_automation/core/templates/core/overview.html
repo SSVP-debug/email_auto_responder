@@ -1,46 +1,47 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Overview</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
 </head>
 <body>
+<div class="container">
+
     <h2>Last Run Overview</h2>
 
-    <table border="1" cellpadding="8">
+    <table>
         <tr>
             <th>Sender</th>
             <th>Subject</th>
             <th>Status</th>
-            <th>Time</th>
-            <th>
-                {% if email.needs_manual_reply %}
-                    <span style="color:orange;">Manual reply pending</span>
-                {% elif email.status == "NEEDS_REVIEW" %}
-                    <span style="color:gray;">System / no-reply email</span>
-                {% else %}
-                    —
-                {% endif %}
-            </th>
+            <th>Follow-up</th>
         </tr>
+
         {% for email in emails %}
         <tr>
             <td>{{ email.sender_email }}</td>
             <td>{{ email.subject }}</td>
-            <td>{{ email.status }}</td>
-            <td>{{ email.created_at }}</td>
-            <td>{% if email.needs_manual_reply %}
-                <span style="color:orange;">Manual reply pending</span>
+            <td>
+                {% if email.status == "REPLIED" %}
+                    <span class="badge green">Replied</span>
+                {% elif email.status == "ACKNOWLEDGED" %}
+                    <span class="badge orange">Acknowledged</span>
                 {% else %}
-                —
+                    <span class="badge gray">System</span>
                 {% endif %}
             </td>
-
+            <td>
+                {% if email.needs_manual_reply %}
+                    <span class="badge orange">Manual reply pending</span>
+                {% else %}
+                    —
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </table>
+
+</div>
 </body>
 </html>
-
-<td>
-    
-</td>

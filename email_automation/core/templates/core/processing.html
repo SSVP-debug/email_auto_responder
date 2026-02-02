@@ -1,54 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Processing Emails</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
 </head>
 <body>
+<div class="container">
 
-    <!-- TOP RIGHT STOP BUTTON -->
-    <div style="float:right;">
-        <form action="{% url 'stop_run' run_id %}" method="post" style="float:right;">
-    {% csrf_token %}
-    <button style="background:red;color:white;">STOP</button>
-</form>
+    <form action="{% url 'stop_run' run_id %}" method="post" style="float:right;">
+        {% csrf_token %}
+        <button class="danger">STOP</button>
+    </form>
 
+    <h2>Processing Emails</h2>
 
-    </div>
-
-    <h2>Auto-reply in progress</h2>
-
-    <!-- ERROR MESSAGE GOES HERE -->
     {% if error %}
-        <p style="color:red;">
-            Error: {{ error }}
-        </p>
+        <p style="color:red;">{{ error }}</p>
     {% endif %}
 
-    <!-- EMAIL LIST -->
-    <ul>
-        {% for email in emails %}
-            <li>
-                <strong>Email:</strong> {{ email.from }} <br>
-                <strong>Subject:</strong> {{ email.subject }} <br>
-                <strong>Status:</strong> {{ email.status }}
-            </li>
-            <hr>
-        {% empty %}
-            <p>No unread emails found.</p>
-        {% endfor %}
-    </ul>
+    {% for email in emails %}
+        <p>
+            <strong>{{ email.from }}</strong><br>
+            {{ email.subject }}<br>
 
-    <!-- OVERVIEW BUTTON -->
+            {% if email.status == "REPLIED" %}
+                <span class="badge green">Auto-replied</span>
+            {% elif email.status == "ACKNOWLEDGED" %}
+                <span class="badge orange">Acknowledged</span>
+            {% else %}
+                <span class="badge gray">Needs review</span>
+            {% endif %}
+        </p>
+        <hr>
+    {% empty %}
+        <p>No unread emails found.</p>
+    {% endfor %}
+
     <form action="{% url 'overview' run_id %}" method="get">
-        <button>View Overview</button>
+        <button class="secondary">View Overview</button>
     </form>
-    <strong>Status:</strong>
-{% if email.status == "REPLIED" %}
-    <span style="color:green;">Auto-replied</span>
-{% elif email.status == "SKIPPED" %}
-    <span style="color:gray;">Skipped</span>
-{% else %}
-    {{ email.status }}
-{% endif %}
+
+</div>
 </body>
 </html>
