@@ -12,7 +12,15 @@
             <th>Subject</th>
             <th>Status</th>
             <th>Time</th>
-            <th>Follow-up</th>
+            <th>
+                {% if email.needs_manual_reply %}
+                    <span style="color:orange;">Manual reply pending</span>
+                {% elif email.status == "NEEDS_REVIEW" %}
+                    <span style="color:gray;">System / no-reply email</span>
+                {% else %}
+                    —
+                {% endif %}
+            </th>
         </tr>
         {% for email in emails %}
         <tr>
@@ -32,3 +40,7 @@
     </table>
 </body>
 </html>
+
+<td>
+    
+</td>
