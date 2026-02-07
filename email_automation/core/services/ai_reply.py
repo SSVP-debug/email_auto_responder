@@ -1,7 +1,7 @@
 import os
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 def generate_acknowledgement(subject):
@@ -19,8 +19,6 @@ def generate_acknowledgement(subject):
     )
 
     try:
-        model = genai.GenerativeModel("gemini-1.5-flash")
-
         prompt = (
             "Write a short, professional email acknowledgement.\n"
             "It must clearly say it is automated.\n"
@@ -28,12 +26,15 @@ def generate_acknowledgement(subject):
             f"Email subject: {subject}"
         )
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt
+        )
 
         if response and response.text:
             return response.text.strip()
 
     except Exception:
-        pass  # silently fall back
+        pass  # silent fallback
 
     return fallback
