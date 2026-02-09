@@ -139,3 +139,4 @@ RQ_QUEUES = {
 }
 
 RQ_WORKER_CLASS = 'rq.worker.SimpleWorker'
+EMAIL_PROCESSING_MODE = "sync"  

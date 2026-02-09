@@ -18,3 +18,17 @@ media/
 .vscode/
 .idea/
 .DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+
+# OAuth / secrets
+client_secret.json
+
+# OS
+.DS_Store
+Thumbs.db

@@ -8,13 +8,28 @@
 <body>
     <div class="container">
         <h2>Email Automation</h2>
-        <p>Enter your email and app password to start auto-replying.</p>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="primary" type="submit">Login / Run</button>
-        </form>
+        {% if oauth_ready %}
+            <p>Google account connected</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <button class="primary" type="submit">
+                    Run Email Automation
+                </button>
+            </form>
+        {% else %}
+            <p>
+                Connect your Gmail account securely using Google OAuth.
+                No passwords are stored.
+            </p>
+
+            <a href="{% url 'google_login' %}">
+                <button class="primary">
+                    Login with Google
+                </button>
+            </a>
+        {% endif %}
     </div>
 </body>
 </html>
