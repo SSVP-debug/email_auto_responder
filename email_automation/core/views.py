@@ -1,9 +1,7 @@
-import uuid
-import django_rq
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
-
+import uuid
 from .models import EmailLog, RunControl
 from .services.google_oauth import get_oauth_flow
 from .services.email_processor import process_emails_logic
@@ -65,7 +63,6 @@ def index(request):
         "oauth_ready": oauth_ready
     })
 
-
 def google_login(request):
     flow = get_oauth_flow()
     flow.redirect_uri = "http://127.0.0.1:8000/oauth/callback/"
@@ -93,8 +90,7 @@ def google_callback(request):
         "token_uri": credentials.token_uri,
         "client_id": credentials.client_id,
         "client_secret": credentials.client_secret,
-        "scopes": credentials.scopes,
-        
+        "scopes": credentials.scopes,        
     }
 
     return redirect("index")
@@ -103,7 +99,6 @@ def google_callback(request):
 def overview(request, run_id):
     emails = EmailLog.objects.filter(run_id=run_id).order_by("created_at")
     return render(request, "core/overview.html", {"emails": emails})
-
 
 def stop_run(request, run_id):
     RunControl.objects.filter(run_id=run_id).update(stop_requested=True)
